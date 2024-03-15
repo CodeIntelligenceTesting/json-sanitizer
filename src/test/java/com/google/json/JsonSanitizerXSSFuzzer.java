@@ -12,25 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.example;
+package com.google.json;
 
-import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 import com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh;
-
-import com.google.json.JsonSanitizer;
+import com.code_intelligence.jazzer.junit.FuzzTest;
 
 public class JsonSanitizerXSSFuzzer {
-  // 1. The fuzzer calls fuzzerTestOneInput continuously generating new
-  // data in each iteration to maximize code coverage and explore more
-  // code.
-  public static void fuzzerTestOneInput(FuzzedDataProvider data) {
+
+  @FuzzTest
+  public void fuzzerTestOneInput(String data) {
     // 2. Interpret fuzzer-generated data as String since this is the type
     // expected by the method we want to test
-    String input = data.consumeRemainingAsString();
     String safeJSON;
     try {
       // 3. Call the method we want to test with the fuzzer-generated input
-      safeJSON = JsonSanitizer.sanitize(input, 10);
+      safeJSON = JsonSanitizer.sanitize(data, 10);
     } catch (Exception e) {
       // 4. Ignore all exception since we are here interested in checking if the
       // sanitized output could contain a closing script tag. This property is claimed
@@ -38,8 +34,8 @@ public class JsonSanitizerXSSFuzzer {
       return;
     }
 
-    // 5. Check if the sanitized input can contain the closing script tag. If this is the 
-    // case, we report a security issue with high severity since this would result in a XSS 
+    // 5. Check if the sanitized input can contain the closing script tag. If this is the
+    // case, we report a security issue with high severity since this would result in a XSS
     // vulnerability.
     assert !safeJSON.contains("</script")
       : new FuzzerSecurityIssueHigh("XSS Injection: Output contains </script");

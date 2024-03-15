@@ -12,18 +12,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific lan
 
-package com.example;
+package com.google.json;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-import com.code_intelligence.jazzer.api.FuzzerSecurityIssueHigh;
-
-import com.google.json.EvalMinifier;
+import com.code_intelligence.jazzer.junit.FuzzTest;
 
 public class JsonSanitizerMinifierFuzzer {
     // 1. The fuzzer calls fuzzerTestOneInput continuously generating new
     // data in each iteration to maximize code coverage and explore more
     // code.
-    public static void fuzzerTestOneInput(FuzzedDataProvider data) {
+    @FuzzTest
+    public void fuzzerTestOneInput(FuzzedDataProvider data) {
         // 2. Interpret fuzzer-generated data as String since this is the type
         // expected by the method we want to test
         String input = data.consumeRemainingAsString();
