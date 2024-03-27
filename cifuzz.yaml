@@ -28,8 +28,7 @@ build-system: maven
 ## Command-line arguments to pass to libFuzzer.
 ## See https://llvm.org/docs/LibFuzzer.html#options
 engine-args:
-- -use_value_profile=1
-- --keep_going=20
+  #- -use_value_profile=1
 
 ## Maximum time to run fuzz tests. The default is to run indefinitely.
 #timeout: 30m
